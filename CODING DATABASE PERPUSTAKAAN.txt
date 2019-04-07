@@ -1,0 +1,163 @@
+Microsoft Windows [Version 10.0.17134.648]
+(c) 2018 Microsoft Corporation. All rights reserved.
+
+C:\Users\ASUS>cd c:\xampp\mysql\bin
+
+c:\xampp\mysql\bin>mysql -u root
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 2
+Server version: 10.1.32-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> create database;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 1
+MariaDB [(none)]> create database data_perpus;
+Query OK, 1 row affected (0.02 sec)
+
+MariaDB [(none)]> use data_perpus;
+Database changed
+MariaDB [data_perpus]> create table anggota
+    -> (id_anggota int(20) primary key,
+    -> nama_anggota char(20),
+    -> alamat text(50),
+    -> no_tlp int(20));
+Query OK, 0 rows affected (0.52 sec)
+
+MariaDB [data_perpus]> desc anggota;
++--------------+----------+------+-----+---------+-------+
+| Field        | Type     | Null | Key | Default | Extra |
++--------------+----------+------+-----+---------+-------+
+| id_anggota   | int(20)  | NO   | PRI | NULL    |       |
+| nama_anggota | char(20) | YES  |     | NULL    |       |
+| alamat       | tinytext | YES  |     | NULL    |       |
+| no_tlp       | int(20)  | YES  |     | NULL    |       |
++--------------+----------+------+-----+---------+-------+
+4 rows in set (0.21 sec)
+
+MariaDB [data_perpus]> create table penerbit
+    -> (id_penerbit int(20) primary key,
+    -> nama_penerbit char(20),
+    -> alamat text(50),
+    -> no_tlp int(20));
+Query OK, 0 rows affected (0.24 sec)
+
+MariaDB [data_perpus]> desc penerbit;
++---------------+----------+------+-----+---------+-------+
+| Field         | Type     | Null | Key | Default | Extra |
++---------------+----------+------+-----+---------+-------+
+| id_penerbit   | int(20)  | NO   | PRI | NULL    |       |
+| nama_penerbit | char(20) | YES  |     | NULL    |       |
+| alamat        | tinytext | YES  |     | NULL    |       |
+| no_tlp        | int(20)  | YES  |     | NULL    |       |
++---------------+----------+------+-----+---------+-------+
+4 rows in set (0.01 sec)
+
+MariaDB [data_perpus]> create table pengarang
+    -> (id_pengarang int(20) primary key,
+    -> nama_pengarang char(20),
+    -> alamat text(50),
+    -> no_tlp int(20));
+Query OK, 0 rows affected (0.44 sec)
+
+MariaDB [data_perpus]> desc pengarang;
++----------------+----------+------+-----+---------+-------+
+| Field          | Type     | Null | Key | Default | Extra |
++----------------+----------+------+-----+---------+-------+
+| id_pengarang   | int(20)  | NO   | PRI | NULL    |       |
+| nama_pengarang | char(20) | YES  |     | NULL    |       |
+| alamat         | tinytext | YES  |     | NULL    |       |
+| no_tlp         | int(20)  | YES  |     | NULL    |       |
++----------------+----------+------+-----+---------+-------+
+4 rows in set (0.01 sec)
+
+MariaDB [data_perpus]> create table rak
+    -> (kode_rak int(20) primary key,
+    -> lokasi text(50));
+Query OK, 0 rows affected (0.41 sec)
+
+MariaDB [data_perpus]> desc rak;
++----------+----------+------+-----+---------+-------+
+| Field    | Type     | Null | Key | Default | Extra |
++----------+----------+------+-----+---------+-------+
+| kode_rak | int(20)  | NO   | PRI | NULL    |       |
+| lokasi   | tinytext | YES  |     | NULL    |       |
++----------+----------+------+-----+---------+-------+
+2 rows in set (0.01 sec)
+
+MariaDB [data_perpus]> create table buku
+    -> (id_buku int(20) primary key,
+    -> judul_buku char(30),
+    -> id_penerbit int(20),
+    -> id_pengarang int(20),
+    -> tahun_buku int(10),
+    -> jumlah_buku int(100),
+    -> foreign key(id_penerbit) references penerbit(id_penerbit),
+    -> foreign key(id_pengarang) references pengarang(id_pengarang));
+Query OK, 0 rows affected (0.49 sec)
+
+MariaDB [data_perpus]> desc buku;
++--------------+----------+------+-----+---------+-------+
+| Field        | Type     | Null | Key | Default | Extra |
++--------------+----------+------+-----+---------+-------+
+| id_buku      | int(20)  | NO   | PRI | NULL    |       |
+| judul_buku   | char(30) | YES  |     | NULL    |       |
+| id_penerbit  | int(20)  | YES  | MUL | NULL    |       |
+| id_pengarang | int(20)  | YES  | MUL | NULL    |       |
+| tahun_buku   | int(10)  | YES  |     | NULL    |       |
+| jumlah_buku  | int(100) | YES  |     | NULL    |       |
++--------------+----------+------+-----+---------+-------+
+6 rows in set (0.04 sec)
+
+MariaDB [data_perpus]> create table reg_buku
+    -> (no_reg int(20) primary key,
+    -> id_buku int(20),
+    -> kode_rak int(20),
+    -> foreign key(id_buku) references buku(id_buku),
+    -> foreign key(kode_rak) refences rak(kode_rak));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'refences rak(kode_rak))' at line 6
+MariaDB [data_perpus]> create table reg_buku
+    -> (no_reg int(20) primary key,
+    -> id_buku int(20),
+    -> kode_rak int(20),
+    -> foreign key(id_buku) references buku(id_buku),
+    -> foreign key(id_buku) references rak(kode_rak));
+Query OK, 0 rows affected (0.33 sec)
+
+MariaDB [data_perpus]> desc reg_buku;
++----------+---------+------+-----+---------+-------+
+| Field    | Type    | Null | Key | Default | Extra |
++----------+---------+------+-----+---------+-------+
+| no_reg   | int(20) | NO   | PRI | NULL    |       |
+| id_buku  | int(20) | YES  | MUL | NULL    |       |
+| kode_rak | int(20) | YES  |     | NULL    |       |
++----------+---------+------+-----+---------+-------+
+3 rows in set (0.12 sec)
+
+MariaDB [data_perpus]> create table peminjaman
+    -> (kode_transaksi int(20) primary key,
+    -> id_anggota int(20),
+    -> id_buku int(20),
+    -> tanggal_pinjam date,
+    -> tanggal_kembali date,
+    -> denda text(200),
+    -> foreign key(id_anggota) references anggota(id_anggota),
+    -> foreign key(id_buku) references buku(id_buku));
+Query OK, 0 rows affected (0.59 sec)
+
+MariaDB [data_perpus]> desc peminjaman;
++-----------------+----------+------+-----+---------+-------+
+| Field           | Type     | Null | Key | Default | Extra |
++-----------------+----------+------+-----+---------+-------+
+| kode_transaksi  | int(20)  | NO   | PRI | NULL    |       |
+| id_anggota      | int(20)  | YES  | MUL | NULL    |       |
+| id_buku         | int(20)  | YES  | MUL | NULL    |       |
+| tanggal_pinjam  | date     | YES  |     | NULL    |       |
+| tanggal_kembali | date     | YES  |     | NULL    |       |
+| denda           | tinytext | YES  |     | NULL    |       |
++-----------------+----------+------+-----+---------+-------+
+6 rows in set (0.11 sec)
+
+MariaDB [data_perpus]>
